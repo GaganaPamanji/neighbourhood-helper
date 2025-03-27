@@ -1,0 +1,103 @@
+/* Additional custom styles */
+
+/* Task status badges */
+.badge-open {
+    background-color: var(--bs-warning);
+}
+
+.badge-assigned {
+    background-color: var(--bs-info);
+}
+
+.badge-completed {
+    background-color: var(--bs-success);
+}
+
+.badge-cancelled {
+    background-color: var(--bs-danger);
+}
+
+/* Task cards */
+.task-card {
+    transition: transform 0.2s;
+}
+
+.task-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Profile sections */
+.profile-section {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Hero section on landing page */
+.hero-section {
+    padding: 5rem 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+/* Rating stars */
+.rating-stars {
+    font-size: 1.5rem;
+    color: var(--bs-warning);
+}
+
+/* Category icons */
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Welcome message animation */
+.welcome-message {
+    animation: fadeIn 1.5s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Making forms more attractive */
+.form-container {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Dashboard sections */
+.dashboard-section {
+    margin-bottom: 2rem;
+}
+
+.dashboard-title {
+    border-bottom: 1px solid var(--bs-secondary);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Improve spacing on mobile */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .hero-section {
+        padding: 3rem 0;
+    }
+}

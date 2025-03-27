@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="text-center mb-0">Provide Feedback</h2>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info mb-4">
+                    <h5>Task: {{ task.title }}</h5>
+                    <p><strong>Volunteer:</strong> {{ task.volunteer.profile.first_name }} {{ task.volunteer.profile.last_name }}</p>
+                    <p><strong>Completed on:</strong> {{ task.completed_at.strftime('%Y-%m-%d') }}</p>
+                </div>
+                
+                <form method="POST" action="{{ url_for('provide_feedback', task_id=task.id) }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.rating.label }}</label>
+                        <div class="rating-container mb-2">
+                            {% for subfield in form.rating %}
+                                <div class="form-check form-check-inline">
+                                    {{ subfield(class="form-check-input") }}
+                                    {{ subfield.label(class="form-check-label") }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div id="rating-stars-display" class="rating-stars mb-2">
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        
+                        {% if form.rating.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.rating.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.comments.label(class="form-label") }}
+                        {% if form.comments.errors %}
+                            {{ form.comments(class="form-control is-invalid", rows=5) }}
+                            <div class="invalid-feedback">
+                                {% for error in form.comments.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.comments(class="form-control", rows=5) }}
+                        {% endif %}
+                        <div class="form-text">Please share your experience with the volunteer.</div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('task_details', task_id=task.id) }}" class="btn btn-secondary">Cancel</a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

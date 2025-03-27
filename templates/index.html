@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="hero-section text-center mb-5 p-5 rounded">
+    <div class="welcome-message">
+        <h1 class="display-4">Neighborhood Assistance Program</h1>
+        <p class="lead">Connecting neighbors with volunteers to build a stronger community</p>
+        {% if not current_user.is_authenticated %}
+            <div class="mt-4">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-2">Join Now</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">Sign In</a>
+            </div>
+        {% else %}
+            <div class="mt-4">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-hands-helping category-icon text-primary"></i>
+                <h3>For Volunteers</h3>
+                <p>Share your skills and time to help neighbors in need. Choose tasks that match your abilities and schedule.</p>
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary">Become a Volunteer</a>
+                {% elif current_user.user_type == 'volunteer' %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">Find Tasks</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-hand-holding-heart category-icon text-danger"></i>
+                <h3>For Neighbors</h3>
+                <p>Need assistance with everyday tasks? Submit a request and get matched with caring volunteers in your area.</p>
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-danger">Request Help</a>
+                {% elif current_user.user_type == 'recipient' %}
+                    <a href="{{ url_for('request_help') }}" class="btn btn-outline-danger">Submit Request</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-users category-icon text-success"></i>
+                <h3>Our Community</h3>
+                <p>Together, we're building stronger neighborhoods through mutual support and meaningful connections.</p>
+                <a href="#how-it-works" class="btn btn-outline-success">Learn More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="how-it-works" class="mb-5">
+    <h2 class="text-center mb-4">How It Works</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">For Recipients</h3>
+                </div>
+                <div class="card-body">
+                    <ol class="list-group list-group-flush list-group-numbered">
+                        <li class="list-group-item">Submit a request through our online portal</li>
+                        <li class="list-group-item">Describe the type of assistance needed and preferred times</li>
+                        <li class="list-group-item">Get matched with a local volunteer</li>
+                        <li class="list-group-item">Receive help and provide feedback afterward</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">For Volunteers</h3>
+                </div>
+                <div class="card-body">
+                    <ol class="list-group list-group-flush list-group-numbered">
+                        <li class="list-group-item">Sign up and create a profile with your skills and availability</li>
+                        <li class="list-group-item">Complete a brief orientation session</li>
+                        <li class="list-group-item">Browse requests and choose tasks that interest you</li>
+                        <li class="list-group-item">Help your neighbors and track your volunteering hours</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mb-5">
+    <h2 class="text-center mb-4">Services Offered</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-home me-2 text-primary"></i> Household Tasks</h4>
+                    <p class="card-text">Light cleaning, laundry, or organizing to help maintain a tidy living space.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-shopping-basket me-2 text-primary"></i> Errands</h4>
+                    <p class="card-text">Grocery shopping, picking up prescriptions, or post office trips.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-user-friends me-2 text-primary"></i> Companionship</h4>
+                    <p class="card-text">Friendly visits or phone calls to reduce loneliness and provide social interaction.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-leaf me-2 text-primary"></i> Outdoor Work</h4>
+                    <p class="card-text">Lawn care, snow shoveling, or minor repairs around the yard.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-laptop me-2 text-primary"></i> Technology Help</h4>
+                    <p class="card-text">Teaching basic computer skills or troubleshooting devices.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-child me-2 text-primary"></i> Childcare Assistance</h4>
+                    <p class="card-text">Occasional babysitting or homework help for families.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mb-5">
+    <h2 class="mb-4">Ready to Get Started?</h2>
+    <p class="lead">Join our community today and make a difference in your neighborhood.</p>
+    {% if not current_user.is_authenticated %}
+        <div class="mt-4">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-2">Sign Up Now</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">Log In</a>
+        </div>
+    {% else %}
+        <div class="mt-4">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-tachometer-alt me-2"></i>Program Overview</h5>
+                <div class="row text-center mt-3">
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <div class="bg-primary bg-opacity-25 p-3 rounded">
+                            <h3>{{ tasks|length }}</h3>
+                            <p class="mb-0">Total Tasks</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <div class="bg-warning bg-opacity-25 p-3 rounded">
+                            <h3>{{ tasks|selectattr('status', 'equalto', 'open')|list|length }}</h3>
+                            <p class="mb-0">Open Tasks</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3 mb-md-0">
+                        <div class="bg-info bg-opacity-25 p-3 rounded">
+                            <h3>{{ tasks|selectattr('status', 'equalto', 'assigned')|list|length }}</h3>
+                            <p class="mb-0">Assigned Tasks</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="bg-success bg-opacity-25 p-3 rounded">
+                            <h3>{{ tasks|selectattr('status', 'equalto', 'completed')|list|length }}</h3>
+                            <p class="mb-0">Completed Tasks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Task Status Filters -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Task status filters">
+        <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">All</button>
+        <button type="button" class="btn btn-outline-warning status-filter" data-status="open">Open</button>
+        <button type="button" class="btn btn-outline-info status-filter" data-status="assigned">Assigned</button>
+        <button type="button" class="btn btn-outline-success status-filter" data-status="completed">Completed</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">All Tasks</h3>
+            </div>
+            <div class="card-body">
+                {% if tasks %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Requester</th>
+                                    <th>Volunteer</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in tasks %}
+                                    <tr class="task-card" data-status="{{ task.status }}">
+                                        <td>{{ task.id }}</td>
+                                        <td>{{ task.title }}</td>
+                                        <td>{{ task.category }}</td>
+                                        <td>{{ task.requester.username }}</td>
+                                        <td>{{ task.volunteer.username if task.volunteer else 'None' }}</td>
+                                        <td>
+                                            <span class="badge {{ 'bg-warning' if task.status == 'open' else 'bg-info' if task.status == 'assigned' else 'bg-success' if task.status == 'completed' else 'bg-danger' }}">
+                                                {{ task.status }}
+                                            </span>
+                                        </td>
+                                        <td>{{ task.created_at.strftime('%Y-%m-%d') }}</td>
+                                        <td>
+                                            <a href="{{ url_for('task_details', task_id=task.id) }}" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        No tasks have been created yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

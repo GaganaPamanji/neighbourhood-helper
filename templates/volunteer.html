@@ -1,0 +1,194 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Volunteer Portal</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-hands-helping me-2"></i>Welcome to the Volunteer Portal</h5>
+                    <p class="card-text">Thank you for volunteering with the Neighborhood Assistance Program. As a volunteer, you play a crucial role in building a stronger, more supportive community.</p>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">View Available Tasks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">How Volunteering Works</h3>
+                </div>
+                <div class="card-body">
+                    <ol class="list-group list-group-flush list-group-numbered">
+                        <li class="list-group-item">Browse available tasks on your dashboard</li>
+                        <li class="list-group-item">Choose tasks that match your skills and availability</li>
+                        <li class="list-group-item">Connect with the neighbor who requested help</li>
+                        <li class="list-group-item">Complete the task and mark it as finished</li>
+                        <li class="list-group-item">Receive feedback from the neighbor you helped</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Volunteer Guidelines</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Be reliable and communicate promptly
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Respect privacy and confidentiality
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Only accept tasks you're comfortable with
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Follow through on commitments
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Report any concerns to program administrators
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Services You Can Offer</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-home category-icon text-primary"></i>
+                                    </div>
+                                    <h4>Household Tasks</h4>
+                                    <p>Help with light cleaning, laundry, organizing, and other household chores.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-shopping-basket category-icon text-primary"></i>
+                                    </div>
+                                    <h4>Errands</h4>
+                                    <p>Assist with grocery shopping, picking up prescriptions, or post office trips.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-user-friends category-icon text-primary"></i>
+                                    </div>
+                                    <h4>Companionship</h4>
+                                    <p>Provide friendly visits or phone calls to neighbors experiencing loneliness.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-leaf category-icon text-primary"></i>
+                                    </div>
+                                    <h4>Outdoor Work</h4>
+                                    <p>Help with lawn care, snow shoveling, gardening, or minor repairs.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-laptop category-icon text-primary"></i>
+                                    </div>
+                                    <h4>Technology Help</h4>
+                                    <p>Assist with basic computer skills, device setup, or troubleshooting.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="mb-3">
+                                        <i class="fas fa-child category-icon text-primary"></i>
+                                    </div>
+                                    <h4>Childcare</h4>
+                                    <p>Provide occasional babysitting or help children with homework.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Your Impact</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-4 mb-md-0">
+                            <div class="display-1 text-primary mb-2">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h4>Emotional Support</h4>
+                            <p>Your kindness reduces isolation and brings joy to your neighbors.</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-4 mb-md-0">
+                            <div class="display-1 text-primary mb-2">
+                                <i class="fas fa-hand-holding-heart"></i>
+                            </div>
+                            <h4>Practical Help</h4>
+                            <p>Your assistance with everyday tasks improves quality of life.</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="display-1 text-primary mb-2">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4>Stronger Community</h4>
+                            <p>Your involvement builds relationships and community resilience.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mb-5">
+        <h2>Ready to Make a Difference?</h2>
+        <p class="lead">Find a neighbor who could use your help today.</p>
+        <div class="mt-4">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg">View Tasks</a>
+            <a href="{{ url_for('profile') }}" class="btn btn-outline-light btn-lg ms-2">Update Profile</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

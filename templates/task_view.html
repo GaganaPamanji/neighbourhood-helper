@@ -1,0 +1,204 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Task Details</li>
+            </ol>
+        </nav>
+        <h1>Task Details</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ request.title }}</h5>
+                    <span class="badge bg-{{ get_task_status_class(task.status) }}">{{ task.status.title() }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h6 class="mb-2">Task Description</h6>
+                    <p>{{ request.description }}</p>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="mb-2">Task Details</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                <strong>Date:</strong> {{ request.preferred_date.strftime('%A, %B %d, %Y') }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-clock text-primary me-2"></i>
+                                <strong>Time:</strong> {{ request.preferred_time }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-hourglass-half text-primary me-2"></i>
+                                <strong>Estimated Duration:</strong> {{ request.duration }} minutes
+                            </li>
+                            <li>
+                                <i class="fas fa-tag text-primary me-2"></i>
+                                <strong>Category:</strong> 
+                                {% if request.category == 'household' %}
+                                    <span class="badge bg-info"><i class="fas fa-home me-1"></i> Household</span>
+                                {% elif request.category == 'errands' %}
+                                    <span class="badge bg-primary"><i class="fas fa-shopping-basket me-1"></i> Errands</span>
+                                {% elif request.category == 'companionship' %}
+                                    <span class="badge bg-success"><i class="fas fa-user-friends me-1"></i> Companionship</span>
+                                {% elif request.category == 'outdoor' %}
+                                    <span class="badge bg-warning text-dark"><i class="fas fa-leaf me-1"></i> Outdoor</span>
+                                {% elif request.category == 'technology' %}
+                                    <span class="badge bg-secondary"><i class="fas fa-laptop me-1"></i> Technology</span>
+                                {% elif request.category == 'childcare' %}
+                                    <span class="badge bg-danger"><i class="fas fa-child me-1"></i> Childcare</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-2">Task Timeline</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-edit text-primary me-2"></i>
+                                <strong>Requested:</strong> {{ request.created_at.strftime('%b %d, %Y at %I:%M %p') }}
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-user-check text-primary me-2"></i>
+                                <strong>Assigned:</strong> {{ task.assigned_at.strftime('%b %d, %Y at %I:%M %p') }}
+                            </li>
+                            {% if task.completed_at %}
+                            <li>
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <strong>Completed:</strong> {{ task.completed_at.strftime('%b %d, %Y at %I:%M %p') }}
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+                {% if task.notes and task.status == 'completed' %}
+                <div class="mb-4">
+                    <h6 class="mb-2">Completion Notes</h6>
+                    <div class="alert alert-success">
+                        <p class="mb-0">{{ task.notes }}</p>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if current_user.id == task.volunteer_id and task.status == 'assigned' %}
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        <h6 class="mb-3">Mark Task as Complete</h6>
+                        <form method="POST" action="{{ url_for('task_view', task_id=task.id) }}">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="mb-3">
+                                {{ form.notes.label(class="form-label") }}
+                                {{ form.notes(class="form-control", rows=3, placeholder="Describe how the task went (optional)") }}
+                            </div>
+                            
+                            <div class="d-grid">
+                                {{ form.submit(class="btn btn-success") }}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+                
+                {% if task.status == 'completed' and not task.feedback and (current_user.id == task.volunteer_id or current_user.id == request.requester_id) %}
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-star me-2"></i>Provide Feedback</h6>
+                    <p>Thank you for completing this task! Please take a moment to provide feedback.</p>
+                    <a href="{{ url_for('feedback', task_id=task.id) }}" class="btn btn-outline-primary">Give Feedback</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <!-- Requester Information Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Requester Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-user-circle fa-4x text-primary mb-3"></i>
+                    <h5>{{ requester.first_name }} {{ requester.last_name }}</h5>
+                </div>
+                
+                {% if task.status == 'assigned' or task.status == 'completed' %}
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-envelope text-primary me-2"></i>
+                        <strong>Email:</strong> {{ requester.email }}
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-phone text-primary me-2"></i>
+                        <strong>Phone:</strong> {{ requester.phone }}
+                    </li>
+                    <li>
+                        <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                        <strong>Address:</strong> {{ requester.address }}
+                    </li>
+                </ul>
+                {% else %}
+                <div class="alert alert-warning">
+                    <p class="mb-0">Contact information will be visible once you accept the task.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Volunteer Information Card -->
+        {% if current_user.id == request.requester_id %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Your Volunteer</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-user-circle fa-4x text-success mb-3"></i>
+                    {% set volunteer = task.volunteer %}
+                    <h5>{{ volunteer.first_name }} {{ volunteer.last_name }}</h5>
+                </div>
+                
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-envelope text-success me-2"></i>
+                        <strong>Email:</strong> {{ volunteer.email }}
+                    </li>
+                    <li>
+                        <i class="fas fa-phone text-success me-2"></i>
+                        <strong>Phone:</strong> {{ volunteer.phone }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Helpful Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-comments text-primary me-2"></i> Communicate clearly with each other.</li>
+                    <li class="mb-2"><i class="fas fa-clock text-primary me-2"></i> Be punctual and respect each other's time.</li>
+                    <li class="mb-2"><i class="fas fa-shield-alt text-primary me-2"></i> Follow safety guidelines at all times.</li>
+                    <li><i class="fas fa-hands-helping text-primary me-2"></i> Remember, you're building community!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

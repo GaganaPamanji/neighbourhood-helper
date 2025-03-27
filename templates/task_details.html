@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">{{ task.title }}</h2>
+                <span class="badge {{ 'bg-warning' if task.status == 'open' else 'bg-info' if task.status == 'assigned' else 'bg-success' if task.status == 'completed' else 'bg-danger' }}">
+                    {{ task.status.title() }}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h5><i class="fas fa-tag me-2"></i>Category</h5>
+                    <p>{{ task.category.title() }}</p>
+                    
+                    <h5><i class="fas fa-align-left me-2"></i>Description</h5>
+                    <p>{{ task.description }}</p>
+                    
+                    <h5><i class="fas fa-map-marker-alt me-2"></i>Location</h5>
+                    <p>{{ task.location }}</p>
+                    
+                    <h5><i class="fas fa-clock me-2"></i>Preferred Time</h5>
+                    <p>{{ task.preferred_time }}</p>
+                    
+                    <h5><i class="fas fa-calendar-alt me-2"></i>Requested On</h5>
+                    <p>{{ task.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                    
+                    {% if task.assigned_at %}
+                        <h5><i class="fas fa-user-check me-2"></i>Assigned On</h5>
+                        <p>{{ task.assigned_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                    {% endif %}
+                    
+                    {% if task.completed_at %}
+                        <h5><i class="fas fa-check-circle me-2"></i>Completed On</h5>
+                        <p>{{ task.completed_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                    {% endif %}
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-user me-2"></i>Requester</h5>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Name:</strong> {{ requester.profile.first_name }} {{ requester.profile.last_name }}</p>
+                                {% if current_user.id == task.volunteer_id or current_user.user_type == 'admin' %}
+                                    <p><strong>Contact:</strong> {{ requester.email }}</p>
+                                    <p><strong>Phone:</strong> {{ requester.profile.phone }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% if volunteer %}
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-hands-helping me-2"></i>Volunteer</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Name:</strong> {{ volunteer.profile.first_name }} {{ volunteer.profile.last_name }}</p>
+                                    {% if current_user.id == task.requester_id or current_user.user_type == 'admin' %}
+                                        <p><strong>Contact:</strong> {{ volunteer.email }}</p>
+                                        <p><strong>Phone:</strong> {{ volunteer.profile.phone }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                {% if feedback %}
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-comment me-2"></i>Feedback</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="rating-stars mb-2">
+                                {% for i in range(feedback.rating) %}
+                                    <i class="fas fa-star"></i>
+                                {% endfor %}
+                                {% for i in range(5 - feedback.rating) %}
+                                    <i class="far fa-star"></i>
+                                {% endfor %}
+                                <span class="ms-2">({{ feedback.rating }}/5)</span>
+                            </div>
+                            {% if feedback.comments %}
+                                <p><strong>Comments:</strong> {{ feedback.comments }}</p>
+                            {% endif %}
+                            <p class="text-muted"><small>Submitted on {{ feedback.created_at.strftime('%Y-%m-%d') }}</small></p>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                    
+                    {% if task.status == 'open' and current_user.user_type == 'volunteer' %}
+                        <form method="POST" action="{{ url_for('volunteer_for_task', task_id=task.id) }}">
+                            <button type="submit" class="btn btn-primary" id="volunteer-btn">
+                                <i class="fas fa-hand-holding-heart me-1"></i> Volunteer for this Task
+                            </button>
+                        </form>
+                    {% elif task.status == 'assigned' and current_user.id == task.volunteer_id %}
+                        <form method="POST" action="{{ url_for('complete_task', task_id=task.id) }}">
+                            <button type="submit" class="btn btn-success" id="complete-task-btn">
+                                <i class="fas fa-check-circle me-1"></i> Mark as Complete
+                            </button>
+                        </form>
+                    {% elif task.status == 'completed' and current_user.id == task.requester_id and not feedback %}
+                        <a href="{{ url_for('provide_feedback', task_id=task.id) }}" class="btn btn-primary">
+                            <i class="fas fa-star me-1"></i> Provide Feedback
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

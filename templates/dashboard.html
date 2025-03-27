@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1 class="mb-4">Welcome, {{ current_user.username }}</h1>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-user me-2"></i>Your Dashboard</h5>
+                <p class="card-text">
+                    {{ "Browse available tasks and see the ones you've volunteered for." if current_user.user_type == 'volunteer' else "Manage your help requests and see their status." }}
+                </p>
+                {% if current_user.user_type == 'recipient' %}
+                    <a href="{{ url_for('request_help') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i> Request Help
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Task Status Filters -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="Task status filters">
+        <button type="button" class="btn btn-outline-secondary status-filter active" data-status="all">All</button>
+        <button type="button" class="btn btn-outline-warning status-filter" data-status="open">Open</button>
+        <button type="button" class="btn btn-outline-info status-filter" data-status="assigned">Assigned</button>
+        <button type="button" class="btn btn-outline-success status-filter" data-status="completed">Completed</button>
+    </div>
+</div>
+
+{% if current_user.user_type == 'volunteer' %}
+    <!-- Volunteer View -->
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card dashboard-section">
+                <div class="card-header">
+                    <h3 class="mb-0">My Volunteered Tasks</h3>
+                </div>
+                <div class="card-body">
+                    {% if my_tasks %}
+                        <div class="row">
+                            {% for task in my_tasks %}
+                                <div class="col-md-6 col-lg-4 mb-3 task-card" data-status="{{ task.status }}">
+                                    <div class="card h-100">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">{{ task.title }}</h5>
+                                            <span class="badge {{ 'bg-info' if task.status == 'assigned' else 'bg-success' if task.status == 'completed' else 'bg-danger' }}">
+                                                {{ task.status.title() }}
+                                            </span>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text"><strong>Category:</strong> {{ task.category.title() }}</p>
+                                            <p class="card-text"><strong>Date:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
+                                            <p class="card-text text-truncate"><strong>Location:</strong> {{ task.location }}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="{{ url_for('task_details', task_id=task.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                                            {% if task.status == 'assigned' %}
+                                                <form method="POST" action="{{ url_for('complete_task', task_id=task.id) }}" class="d-inline">
+                                                    <button type="submit" class="btn btn-success btn-sm" id="complete-task-btn">
+                                                        Mark Complete
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            You haven't volunteered for any tasks yet. Browse the available tasks below!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12 mb-4">
+            <div class="card dashboard-section">
+                <div class="card-header">
+                    <h3 class="mb-0">Available Tasks</h3>
+                </div>
+                <div class="card-body">
+                    {% if available_tasks %}
+                        <div class="row">
+                            {% for task in available_tasks %}
+                                <div class="col-md-6 col-lg-4 mb-3 task-card" data-status="{{ task.status }}">
+                                    <div class="card h-100">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">{{ task.title }}</h5>
+                                            <span class="badge bg-warning">Available</span>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text"><strong>Category:</strong> {{ task.category.title() }}</p>
+                                            <p class="card-text"><strong>Date:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
+                                            <p class="card-text text-truncate"><strong>Location:</strong> {{ task.location }}</p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="{{ url_for('task_details', task_id=task.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            There are no available tasks at this time. Please check back later!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <!-- Recipient View -->
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card dashboard-section">
+                <div class="card-header">
+                    <h3 class="mb-0">My Help Requests</h3>
+                </div>
+                <div class="card-body">
+                    {% if my_requests %}
+                        <div class="row">
+                            {% for task in my_requests %}
+                                <div class="col-md-6 col-lg-4 mb-3 task-card" data-status="{{ task.status }}">
+                                    <div class="card h-100">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">{{ task.title }}</h5>
+                                            <span class="badge {{ 'bg-warning' if task.status == 'open' else 'bg-info' if task.status == 'assigned' else 'bg-success' if task.status == 'completed' else 'bg-danger' }}">
+                                                {{ task.status.title() }}
+                                            </span>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text"><strong>Category:</strong> {{ task.category.title() }}</p>
+                                            <p class="card-text"><strong>Date:</strong> {{ task.created_at.strftime('%Y-%m-%d') }}</p>
+                                            {% if task.volunteer %}
+                                                <p class="card-text"><strong>Volunteer:</strong> {{ task.volunteer.username }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="{{ url_for('task_details', task_id=task.id) }}" class="btn btn-primary btn-sm">View Details</a>
+                                            {% if task.status == 'completed' and not task.feedback %}
+                                                <a href="{{ url_for('provide_feedback', task_id=task.id) }}" class="btn btn-outline-success btn-sm">
+                                                    Provide Feedback
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info">
+                            You haven't requested any help yet. Click the "Request Help" button to get started!
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

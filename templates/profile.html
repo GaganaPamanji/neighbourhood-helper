@@ -1,0 +1,145 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="text-center mb-0">My Profile</h2>
+            </div>
+            <div class="card-body">
+                <div class="mb-4 text-center">
+                    <div class="display-1 mb-3">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3>{{ current_user.username }}</h3>
+                    <p class="text-muted">{{ current_user.user_type.title() }}</p>
+                </div>
+                
+                <form method="POST" action="{{ url_for('profile') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="profile-section">
+                        <h4 class="mb-3"><i class="fas fa-user me-2"></i>Personal Information</h4>
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                {{ form.first_name.label(class="form-label") }}
+                                {% if form.first_name.errors %}
+                                    {{ form.first_name(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.first_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.first_name(class="form-control") }}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.last_name.label(class="form-label") }}
+                                {% if form.last_name.errors %}
+                                    {{ form.last_name(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.last_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.last_name(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <p><strong>Email:</strong> {{ current_user.email }}</p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.phone.label(class="form-label") }}
+                            {% if form.phone.errors %}
+                                {{ form.phone(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.phone.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.phone(class="form-control") }}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.address.label(class="form-label") }}
+                            {% if form.address.errors %}
+                                {{ form.address(class="form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.address.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.address(class="form-control") }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if current_user.user_type == 'volunteer' %}
+                        <div class="profile-section">
+                            <h4 class="mb-3"><i class="fas fa-hands-helping me-2"></i>Volunteer Information</h4>
+                            
+                            <div class="mb-3">
+                                {{ form.skills.label(class="form-label") }}
+                                {% if form.skills.errors %}
+                                    {{ form.skills(class="form-control is-invalid", rows=3) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.skills.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.skills(class="form-control", rows=3) }}
+                                {% endif %}
+                                <div class="form-text">List your skills, separated by commas (e.g., "lawn care, cooking, computer help")</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.availability.label(class="form-label") }}
+                                {% if form.availability.errors %}
+                                    {{ form.availability(class="form-control is-invalid", rows=3) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.availability.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.availability(class="form-control", rows=3) }}
+                                {% endif %}
+                                <div class="form-text">Describe when you're typically available to help</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.bio.label(class="form-label") }}
+                                {% if form.bio.errors %}
+                                    {{ form.bio(class="form-control is-invalid", rows=5) }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.bio.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.bio(class="form-control", rows=5) }}
+                                {% endif %}
+                                <div class="form-text">Tell others about yourself and why you want to volunteer</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
