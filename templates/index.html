@@ -4,7 +4,7 @@
 <div class="hero-section text-center mb-5 p-5 rounded">
     <div class="welcome-message">
         <h1 class="display-4">Neighbourhood Assistance Program</h1>
-        <p class="lead">Connecting neighbors with volunteers to build a stronger community</p>
+        <p class="lead">Connecting neighbours with volunteers to build a stronger community</p>
         {% if not current_user.is_authenticated %}
             <div class="mt-4">
                 <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-2">Join Now</a>
@@ -24,7 +24,7 @@
             <div class="card-body text-center">
                 <i class="fas fa-hands-helping category-icon text-primary"></i>
                 <h3>For Volunteers</h3>
-                <p>Share your skills and time to help neighbors in need. Choose tasks that match your abilities and schedule.</p>
+                <p>Share your skills and time to help neighbours in need. Choose tasks that match your abilities and schedule.</p>
                 {% if not current_user.is_authenticated %}
                     <a href="{{ url_for('register') }}" class="btn btn-outline-primary">Become a Volunteer</a>
                 {% elif current_user.user_type == 'volunteer' %}
@@ -37,7 +37,7 @@
         <div class="card h-100">
             <div class="card-body text-center">
                 <i class="fas fa-hand-holding-heart category-icon text-danger"></i>
-                <h3>For Neighbors</h3>
+                <h3>For Neighbours</h3>
                 <p>Need assistance with everyday tasks? Submit a request and get matched with caring volunteers in your area.</p>
                 {% if not current_user.is_authenticated %}
                     <a href="{{ url_for('register') }}" class="btn btn-outline-danger">Request Help</a>
@@ -87,7 +87,7 @@
                         <li class="list-group-item">Sign up and create a profile with your skills and availability</li>
                         <li class="list-group-item">Complete a brief orientation session</li>
                         <li class="list-group-item">Browse requests and choose tasks that interest you</li>
-                        <li class="list-group-item">Help your neighbors and track your volunteering hours</li>
+                        <li class="list-group-item">Help your neighbours and track your volunteering hours</li>
                     </ol>
                 </div>
             </div>

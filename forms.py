@@ -16,7 +16,7 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', 
                                     validators=[DataRequired(), EqualTo('password')])
     user_type = RadioField('I am a:', choices=[('volunteer', 'Volunteer'), 
-                                              ('recipient', 'Neighbor in Need')],
+                                              ('recipient', 'Neighbour in Need')],
                           validators=[DataRequired()])
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
