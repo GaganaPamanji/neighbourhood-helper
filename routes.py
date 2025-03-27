@@ -9,7 +9,7 @@ from helpers import get_task_status_class
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Neighborhood Assistance Program')
+    return render_template('index.html', title='Neighbourhood Assistance Program')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

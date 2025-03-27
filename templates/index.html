@@ -3,7 +3,7 @@
 {% block content %}
 <div class="hero-section text-center mb-5 p-5 rounded">
     <div class="welcome-message">
-        <h1 class="display-4">Neighborhood Assistance Program</h1>
+        <h1 class="display-4">Neighbourhood Assistance Program</h1>
         <p class="lead">Connecting neighbors with volunteers to build a stronger community</p>
         {% if not current_user.is_authenticated %}
             <div class="mt-4">
@@ -52,7 +52,7 @@
             <div class="card-body text-center">
                 <i class="fas fa-users category-icon text-success"></i>
                 <h3>Our Community</h3>
-                <p>Together, we're building stronger neighborhoods through mutual support and meaningful connections.</p>
+                <p>Together, we're building stronger neighbourhoods through mutual support and meaningful connections.</p>
                 <a href="#how-it-works" class="btn btn-outline-success">Learn More</a>
             </div>
         </div>
@@ -151,7 +151,7 @@
 
 <div class="text-center mb-5">
     <h2 class="mb-4">Ready to Get Started?</h2>
-    <p class="lead">Join our community today and make a difference in your neighborhood.</p>
+    <p class="lead">Join our community today and make a difference in your neighbourhood.</p>
     {% if not current_user.is_authenticated %}
         <div class="mt-4">
             <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg me-2">Sign Up Now</a>

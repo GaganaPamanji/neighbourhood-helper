@@ -1,4 +1,4 @@
-// Main JavaScript file for the Neighborhood Assistance Program
+// Main JavaScript file for the Neighbourhood Assistance Program
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips
