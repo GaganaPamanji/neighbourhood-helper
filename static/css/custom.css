@@ -1,16 +1,22 @@
 /* Additional custom styles */
 
+/* Custom color variables */
+:root {
+    --custom-dark-green: #0b5e3f;
+    --custom-light-green: #18a76b;
+}
+
 /* Task status badges */
 .badge-open {
-    background-color: var(--bs-warning);
+    background-color: var(--custom-light-green);
 }
 
 .badge-assigned {
-    background-color: var(--bs-info);
+    background-color: var(--custom-dark-green);
 }
 
 .badge-completed {
-    background-color: var(--bs-success);
+    background-color: var(--custom-dark-green);
 }
 
 .badge-cancelled {
@@ -27,18 +33,55 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Global styles */
+body {
+    background-color: white;
+    color: black;
+}
+
+/* Override bootstrap theme styles */
+.bg-dark {
+    background-color: var(--custom-dark-green) !important;
+}
+
+.navbar-dark {
+    background-color: var(--custom-dark-green) !important;
+}
+
+.card {
+    background-color: white;
+    color: black;
+}
+
+.card-header {
+    background-color: var(--custom-dark-green);
+    color: white;
+}
+
+.btn-primary {
+    background-color: var(--custom-dark-green);
+    border-color: var(--custom-dark-green);
+}
+
+.btn-primary:hover {
+    background-color: var(--custom-light-green);
+    border-color: var(--custom-light-green);
+}
+
 /* Profile sections */
 .profile-section {
     margin-bottom: 1.5rem;
     padding: 1.25rem;
     border-radius: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #f8f9fa;
+    border: 1px solid #e3e3e3;
 }
 
 /* Hero section on landing page */
 .hero-section {
     padding: 5rem 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--custom-dark-green);
+    color: white;
     border-radius: 10px;
     margin-bottom: 2rem;
 }
@@ -46,13 +89,14 @@
 /* Rating stars */
 .rating-stars {
     font-size: 1.5rem;
-    color: var(--bs-warning);
+    color: var(--custom-light-green);
 }
 
 /* Category icons */
 .category-icon {
     font-size: 2rem;
     margin-bottom: 1rem;
+    color: var(--custom-dark-green);
 }
 
 /* Welcome message animation */
@@ -73,7 +117,8 @@
 
 /* Making forms more attractive */
 .form-container {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: white;
+    border: 1px solid #e3e3e3;
     border-radius: 10px;
     padding: 2rem;
     margin-bottom: 2rem;
@@ -85,9 +130,16 @@
 }
 
 .dashboard-title {
-    border-bottom: 1px solid var(--bs-secondary);
+    border-bottom: 1px solid var(--custom-dark-green);
     padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
+}
+
+/* Alert styles */
+.alert-info {
+    background-color: #f8f9fa;
+    color: black;
+    border-color: var(--custom-light-green);
 }
 
 /* Improve spacing on mobile */
